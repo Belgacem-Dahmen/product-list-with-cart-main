@@ -23,7 +23,9 @@
 
 
 
-
+.bold{
+  font-weight: var(--weight-bold);
+}
 
 /* Box sizing rules */
 *,
