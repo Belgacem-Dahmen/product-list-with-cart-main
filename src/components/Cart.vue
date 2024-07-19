@@ -8,17 +8,17 @@
         <div v-else class="cart-items">
             <div v-for="(article, key) in articles" :key="key">
                 <div class="cart-item">
-
                     <div class="cart-item__infos">
                         <p class="cart-item__name">{{ article.name }}</p>
-                        <p> <span class="cart-item__quantity">{{ article.quantity }}x</span> <span>@ ${{ article.price }}</span> <span>${{
-                            article.quantity *
-                            article.price }}</span></p>
+                        <p>
+                            <span class="cart-item__quantity">{{ article.quantity }}x</span> 
+                            <span>@ ${{ article.price }}</span> 
+                            <span>${{ article.quantity * article.price }}</span>
+                        </p>
                     </div>
-                    <button class="cart-item__remove-btn">
+                    <button class="cart-item__remove-btn" @click="handleRemove(article)">
                         <img :src="iconRemove" alt="">
                     </button>
-
                 </div>
             </div>
             <div class="order-total">
@@ -29,7 +29,7 @@
                 <img class="order__delivery-icon" :src="neutralIcon" alt="">
                 <p class="order__delivery-text">This is a <span class="bold">carbon-neutral</span> delivery</p>
             </div>
-            <button class="order__delivery-confirmBtn "  >
+            <button class="order__delivery-confirmBtn ">
                 Confirm Order
             </button>
         </div>
@@ -38,31 +38,41 @@
 
 <script setup>
 import { computed } from 'vue';
-import iconRemove from "@/assets/images/icon-remove-item.svg"
-import neutralIcon from "@/assets/images/icon-carbon-neutral.svg"
+import iconRemove from "@/assets/images/icon-remove-item.svg";
+import neutralIcon from "@/assets/images/icon-carbon-neutral.svg";
+
+const props = defineProps({
+    cartData: {
+        type: Array,
+        default: () => []
+    },
+    removeArticle: {
+        type: Function,
+        required: true
+    }
+});
+
 
 const articles = computed(() => {
     const uniqueArticlesMap = new Map();
-    cartData.forEach(article => {
+    props.cartData.forEach(article => {
         const key = JSON.stringify(article);
         if (uniqueArticlesMap.has(key)) {
             uniqueArticlesMap.get(key).quantity++;
         } else {
             uniqueArticlesMap.set(key, { ...article, quantity: 1 });
-
         }
     });
-
     return Array.from(uniqueArticlesMap.values());
 });
 
 const numberOfArticles = computed(() => {
-    return cartData.length
-})
+    return props.cartData.length;
+});
 
 const isEmptyCart = computed(() => {
-    return cartData.length == 0 ? true : false
-})
+    return props.cartData.length === 0;
+});
 
 const totalPrice = computed(() => {
     return articles.value.reduce((sum, article) => {
@@ -70,18 +80,9 @@ const totalPrice = computed(() => {
     }, 0);
 });
 
-
-const { cartData } = defineProps({
-    cartData: {
-        type: Array,
-        default: []
-    }
-
-})
-
-
-
-
+const handleRemove = (product) => {
+    props.removeArticle(product);
+};
 </script>
 
 <style scoped>
@@ -119,14 +120,16 @@ const { cartData } = defineProps({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom:  0.1px solid var(--rose-100);
+    border-bottom: 0.1px solid var(--rose-100);
     padding-bottom: 10px;
 }
-.cart-item__name{
+
+.cart-item__name {
     font-weight: var(--weight-bold);
     font-size: 14px;
     margin-bottom: 10px;
 }
+
 .cart-item__remove-btn {
     border: 1px solid gray;
     background: transparent;
@@ -137,11 +140,13 @@ const { cartData } = defineProps({
 
 
 }
+
 .cart-item__quantity {
     color: rgb(216, 63, 7);
     font-weight: var(--weight-bold);
-    
+
 }
+
 .order-total {
     display: flex;
     align-items: center;
