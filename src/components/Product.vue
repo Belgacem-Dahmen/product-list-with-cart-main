@@ -2,15 +2,17 @@
     <div class="product">
         <div class="product__header">
 
-            <picture class="product__header-img" :class="isSelected ? 'selected' : null" :onclick="selectProduct">
+            <picture class="product__header-img" :class="isSelected ? 'selected' : null" :onclick="toogleSelectedProduct">
                 <source :srcset="getImageUrl(product.image.desktop)" media="(min-width: 1200px)">
                 <source :srcset="getImageUrl(product.image.tablet)" media="(min-width: 768px)">
                 <source :srcset="getImageUrl(product.image.mobile)" media="(min-width: 480px)">
                 <img :src="getImageUrl(product.image.mobile)" :alt="product.name">
             </picture>
-            <button class="product__header-btn" :onclick="handleClick">
-                <img :src="cartIcon" alt="">
-                Add To Cart</button>
+            <button v-if="!isSelected" class="product__header-btn" :onclick="handleClick"><img :src="cartIcon" alt="">Add To
+                Cart</button>
+            <button v-else class="product__header-btn orange"><img :src="decrementIcon" alt="" :onclick="handleUpdate"> 0
+                <img :src="incrementIcon" alt="" :onclick="handleClick"></button>
+
         </div>
         <div class="product__infos">
             <p class="product__infos-category"> {{ product.category }}</p>
@@ -25,6 +27,8 @@
 
 <script setup>
 import cartIcon from "@/assets/images/icon-add-to-cart.svg"
+import incrementIcon from "@/assets/images/icon-increment-quantity.svg"
+import decrementIcon from "@/assets/images/icon-decrement-quantity.svg"
 import { ref } from "vue";
 
 function getImageUrl(url) {
@@ -32,19 +36,30 @@ function getImageUrl(url) {
 }
 const isSelected = ref(false)
 const selectProduct = () => {
+    isSelected.value = true
+}
+
+const toogleSelectedProduct = () => {
     isSelected.value = !isSelected.value
 }
-const { addArticle, product } = defineProps({
-    product: Object,
-    addArticle: Function
+const { addArticle, product, updateQuantity } = defineProps({
+    product: {
+        type: Object,
+        default: () => { },
+    },
+    addArticle: Function,
+    updateQuantity: Function
 })
 
 
 const handleClick = () => {
-   
+    selectProduct()
     addArticle(product)
 }
-
+const handleUpdate = () => {
+    console.log(product);
+    updateQuantity(product, "-")
+}
 
 
 </script>
@@ -72,9 +87,10 @@ const handleClick = () => {
 
 }
 
+
+
 .product__header-btn {
-    display: flex;
-    gap: 10px;
+
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -88,6 +104,13 @@ const handleClick = () => {
     font-weight: var(--weight-semibold);
     background: white;
     min-width: fit-content;
+    display: flex;
+    gap: 10px;
+}
+
+.orange {
+    background: rgb(236, 70, 10);
+    justify-content: space-between;
 }
 
 @media screen and (min-width: 376px) {

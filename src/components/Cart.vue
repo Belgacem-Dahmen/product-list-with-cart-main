@@ -11,8 +11,8 @@
                     <div class="cart-item__infos">
                         <p class="cart-item__name">{{ article.name }}</p>
                         <p>
-                            <span class="cart-item__quantity">{{ article.quantity }}x</span> 
-                            <span>@ ${{ article.price }}</span> 
+                            <span class="cart-item__quantity">{{ article.quantity }}x</span>
+                            <span>@ ${{ article.price }}</span>
                             <span>${{ article.quantity * article.price }}</span>
                         </p>
                     </div>
@@ -83,6 +83,9 @@ const totalPrice = computed(() => {
 const handleRemove = (product) => {
     props.removeArticle(product);
 };
+
+
+
 </script>
 
 <style scoped>
