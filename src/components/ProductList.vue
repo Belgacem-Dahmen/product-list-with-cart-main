@@ -5,7 +5,7 @@
         </div>
         <div class="products__container">
             <div v-for="product in products" :key="product.id">
-                <Product :product="product" />
+                <Product :product="product" :addArticle="addArticle"/>
             </div>
         </div>
 
@@ -15,8 +15,9 @@
 <script setup>
 import Product from './Product.vue';
 
-const { products } = defineProps({
-    products: Object
+const { addArticle , products } = defineProps({
+    products: Object,
+    addArticle : Function
 })
 </script>
 
@@ -31,7 +32,20 @@ h1 {
     gap: 15px;
 }
 
-@media screen and (min-width : 376px) {
+/* tablettes */
+@media (min-width : 376px) and (max-width : 850px) {
+    .productList {
+        grid-column: span 3;
+    }
+    .products__container {
+        display: grid;
+        grid-template-columns: 1fr 1fr ;
+        
+    }
+}
+
+/* desktop */
+@media screen and (min-width : 850px) {
     .productList {
         grid-column: span 3;
     }
@@ -39,7 +53,7 @@ h1 {
     .products__container {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-
+        
     }
 
 }

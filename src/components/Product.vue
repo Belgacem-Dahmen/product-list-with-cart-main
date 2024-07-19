@@ -1,14 +1,14 @@
 <template>
-    <div class="product" :onclick="selectProduct">
+    <div class="product">
         <div class="product__header">
-            <!-- <img class="product__header-img" :src="getImageUrl(product.image.mobile)" :alt="product.name" /> -->
-            <picture class="product__header-img" :class="isSelected ? 'selected' : null">
+
+            <picture class="product__header-img" :class="isSelected ? 'selected' : null" :onclick="selectProduct">
                 <source :srcset="getImageUrl(product.image.desktop)" media="(min-width: 1200px)">
                 <source :srcset="getImageUrl(product.image.tablet)" media="(min-width: 768px)">
                 <source :srcset="getImageUrl(product.image.mobile)" media="(min-width: 480px)">
                 <img :src="getImageUrl(product.image.mobile)" :alt="product.name">
             </picture>
-            <button class="product__header-btn">
+            <button class="product__header-btn" :onclick="handleClick">
                 <img :src="cartIcon" alt="">
                 Add To Cart</button>
         </div>
@@ -26,18 +26,24 @@
 <script setup>
 import cartIcon from "@/assets/images/icon-add-to-cart.svg"
 import { ref } from "vue";
+
 function getImageUrl(url) {
     return new URL(url, import.meta.url).href
 }
 const isSelected = ref(false)
 const selectProduct = () => {
     isSelected.value = !isSelected.value
-    console.log(isSelected);
 }
-const { product } = defineProps({
-    product: Object
+const { addArticle, product } = defineProps({
+    product: Object,
+    addArticle: Function
 })
 
+
+const handleClick = () => {
+   
+    addArticle(product)
+}
 
 
 
@@ -63,7 +69,7 @@ const { product } = defineProps({
 
 .selected {
     outline: 2px solid red;
-    
+
 }
 
 .product__header-btn {

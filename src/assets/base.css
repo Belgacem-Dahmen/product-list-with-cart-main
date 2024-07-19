@@ -64,6 +64,7 @@ body {
   line-height: 1.5;
   font-size: var(--font-size-product-names);
   font-family: var(--ff-redhat);
+  background-color: var(--rose-50);
 }
 
 /* A elements that don't have a class get default styles */
