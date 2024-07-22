@@ -7,29 +7,33 @@ import { ref } from 'vue';
 const cartData = ref([]);
 
 const addArticle = (product) => {
-   cartData.value.push(product);
+  cartData.value.push(product);
+
 };
 
-const removeArticle = (product) =>  {
+const removeArticle = (product) => {
   cartData.value = cartData.value.filter(article => article.name !== product.name);
 }
 
 
-const updateQuantity = (article , signe) => {
+const updateQuantity = (product) => {
+  const index = cartData.value.findIndex(item => item.name === product.name);
+  if (index !== -1) {
+    cartData.value.splice(index, 1);
+  }
 
-if (signe == "+") {
-    article.quantity++
-} else if (signe == "-") {
-    article.quantity--
-}
-    
+};
 
+const checkQuantity = (product) => {
+  return cartData.value.filter(item => item.name === product.name).length;
 }
+
 </script>
 
 <template>
-   <ProductList :products="products" :cartData="cartData" :addArticle="addArticle" :updateQuantity="updateQuantity" />
-   <Cart :cartData='cartData'  :removeArticle="removeArticle" />
+  <ProductList :products="products" :cartData="cartData" :addArticle="addArticle" :updateQuantity="updateQuantity"
+    :checkQuantity="checkQuantity" />
+  <Cart :cartData='cartData' :removeArticle="removeArticle" />
 </template>
 <style></style>
 

@@ -5,7 +5,7 @@
         </div>
         <div class="products__container">
             <div v-for="product in products" :key="product.id">
-                <Product :product="product" :addArticle="addArticle" :updateQuantity="updateQuantity"/>
+                <Product :product="product" :addArticle="addArticle" :updateQuantity="updateQuantity" :checkQuantity="checkQuantity"/>
             </div>
         </div>
 
@@ -18,7 +18,8 @@ import Product from './Product.vue';
 const { addArticle , products, updateQuantity } = defineProps({
     products: Object,
     addArticle : Function,
-    updateQuantity : Function
+    updateQuantity : Function,
+    checkQuantity : Function
 })
 </script>
 

@@ -10,7 +10,8 @@
             </picture>
             <button v-if="!isSelected" class="product__header-btn" :onclick="handleClick"><img :src="cartIcon" alt="">Add To
                 Cart</button>
-            <button v-else class="product__header-btn orange"><img :src="decrementIcon" alt="" :onclick="handleUpdate"> 0
+            <button v-else class="product__header-btn orange"><img :src="decrementIcon" alt="" :onclick="handleUpdate">{{
+                checkQuantity(product) }}
                 <img :src="incrementIcon" alt="" :onclick="handleClick"></button>
 
         </div>
@@ -42,13 +43,14 @@ const selectProduct = () => {
 const toogleSelectedProduct = () => {
     isSelected.value = !isSelected.value
 }
-const { addArticle, product, updateQuantity } = defineProps({
+const { addArticle, product, updateQuantity, checkQuantity } = defineProps({
     product: {
         type: Object,
         default: () => { },
     },
     addArticle: Function,
-    updateQuantity: Function
+    updateQuantity: Function,
+    checkQuantity: Function
 })
 
 
