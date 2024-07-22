@@ -87,6 +87,8 @@ const articles = computed(() => {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
     text-align: left;
     min-width: 600px;
+    max-height: 80vh;
+    overflow-y: scroll;
 
 }
 
