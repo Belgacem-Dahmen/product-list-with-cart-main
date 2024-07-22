@@ -29,7 +29,7 @@
                 <img class="order__delivery-icon" :src="neutralIcon" alt="">
                 <p class="order__delivery-text">This is a <span class="bold">carbon-neutral</span> delivery</p>
             </div>
-            <button class="order__delivery-confirmBtn ">
+            <button class="order__delivery-confirmBtn" @click="handleConfirm">
                 Confirm Order
             </button>
         </div>
@@ -49,7 +49,8 @@ const props = defineProps({
     removeArticle: {
         type: Function,
         required: true
-    }
+    },
+    showModal: Function
 });
 
 
@@ -84,7 +85,10 @@ const handleRemove = (product) => {
     props.removeArticle(product);
 };
 
+const handleConfirm = () => {
+    props.showModal();
 
+}
 
 </script>
 

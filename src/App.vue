@@ -1,7 +1,8 @@
 <script setup>
+import products from '../data.json'
 import ProductList from './components/ProductList.vue';
 import Cart from './components/Cart.vue';
-import products from '../data.json'
+import Modal from './components/Modal.vue';
 import { ref } from 'vue';
 
 const cartData = ref([]);
@@ -27,13 +28,23 @@ const updateQuantity = (product) => {
 const checkQuantity = (product) => {
   return cartData.value.filter(item => item.name === product.name).length;
 }
+const show = ref(false);
 
+const showModal = () => {
+  show.value = true;
+}
+
+const closeModal = () => {
+  show.value = false;
+}
 </script>
 
 <template>
   <ProductList :products="products" :cartData="cartData" :addArticle="addArticle" :updateQuantity="updateQuantity"
     :checkQuantity="checkQuantity" />
-  <Cart :cartData='cartData' :removeArticle="removeArticle" />
+  <Cart :cartData='cartData' :removeArticle="removeArticle" :showModal="showModal" />
+
+  <Modal :cartData="cartData" :showModal="showModal" :closeModal="closeModal" :show="show" />
 </template>
 <style></style>
 
