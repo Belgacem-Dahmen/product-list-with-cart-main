@@ -59,7 +59,7 @@ const handleClick = () => {
     addArticle(product)
 }
 const handleUpdate = () => {
-    console.log(product);
+
     updateQuantity(product, "-")
 }
 
@@ -92,7 +92,6 @@ const handleUpdate = () => {
 
 
 .product__header-btn {
-
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -102,10 +101,10 @@ const handleUpdate = () => {
     border-radius: 25px;
     padding: 10px 20px;
     border: 1px solid gray;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: var(--weight-semibold);
     background: white;
-    min-width: fit-content;
+    width: 75%;
     display: flex;
     gap: 10px;
 }

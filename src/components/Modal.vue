@@ -12,16 +12,17 @@
                             <img class="modal__item-img" :src="getImageUrl(article.image.thumbnail)" alt="">
                             <div>
                                 <p class="modal__item-name">{{ article.name }}</p>
-                                <p>
+                                <div class="modal__item--infos">
                                     <span class="modal-item__quantity">{{ article.quantity }}x</span>
-                                    <span>@ ${{ article.price }}</span>
+                                    <span class="modal-item__uniquePrice">@ ${{ article.price }}</span>
 
-                                </p>
+
+                                </div>
                             </div>
                         </div>
 
                         <div>
-                            <p><span>${{ article.quantity * article.price }}</span></p>
+                            <p><span class="modal-item__price">${{ article.quantity * article.price }}</span></p>
 
                         </div>
                     </div>
@@ -29,10 +30,10 @@
                 </div>
                 <div class="modal__order-infos">
                     <p>Order total</p>
-                    <p> 125$</p>
+                    <p class="modal__total-price"> ${{ totalPrice }}</p>
                 </div>
             </div>
-            <button id="close-button" @click="handleClose">Close</button>
+            <button class="order__delivery-confirmBtn" id="close-button" @click="handleClose">Start New Order</button>
         </div>
     </div>
 </template>
@@ -45,17 +46,23 @@ function getImageUrl(url) {
     return new URL(url, import.meta.url).href
 }
 
-const { cartData, show, closeModal } = defineProps({
+const { cartData, show, closeModal,resetQuantity } = defineProps({
     cartData: {
         type: Array,
         default: () => []
-    }, show: Boolean,
-    closeModal: Function
+    }, 
+    show: Boolean,
+    closeModal: Function,
+    resetQuantity: Function
 })
 
+
 const handleClose = () => {
+    resetQuantity()
     closeModal()
 }
+
+
 
 const articles = computed(() => {
     const uniqueArticlesMap = new Map();
@@ -68,6 +75,12 @@ const articles = computed(() => {
         }
     });
     return Array.from(uniqueArticlesMap.values());
+});
+
+const totalPrice = computed(() => {
+    return articles.value.reduce((sum, article) => {
+        return sum + article.quantity * article.price;
+    }, 0);
 });
 </script>
 
@@ -100,7 +113,7 @@ const articles = computed(() => {
 .modal__items {
     background: var(--rose-100);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 5px;
     display: flex;
     gap: 20px;
     flex-direction: column;
@@ -109,8 +122,10 @@ const articles = computed(() => {
 
 .modal__item {
     display: flex;
-    border-radius: 10px;
     gap: 20px;
+    border-bottom: 1px solid rgba(238, 226, 226, 0.945);
+    padding-bottom: 20px;
+
 }
 
 .modal__item-img {
@@ -122,6 +137,8 @@ const articles = computed(() => {
     display: flex;
     min-width: 100%;
     justify-content: space-between;
+    align-items: center;
+
 
 }
 
@@ -130,11 +147,32 @@ const articles = computed(() => {
     gap: 20px;
 }
 
+.modal-item__quantity {
+    margin-right: 25px;
+    font-weight: var(--weight-bold);
+    color: rgb(180, 62, 19);
+
+}
+
+.modal-item__uniquePrice {
+    color: var(--rose-500);
+}
+
+.modal-item__price {
+    font-weight: var(--weight-bold);
+    font-size: 1.25rem;
+}
+
 .modal__order-infos {
     display: flex;
     min-width: 100%;
     justify-content: space-between;
     align-items: center;
+}
+
+.modal__total-price {
+    font-size: 1.5rem;
+    font-weight: var(--weight-bold);
 }
 
 button {
@@ -150,7 +188,16 @@ button {
     transform: translate(-50%, -50%);
 }
 
+.order__delivery-confirmBtn {
+    background-color: rgb(216, 63, 7);
+    min-width: 100%;
+    border-radius: 45px;
+    border: none;
+    color: var(--rose-100);
+    padding: 15px;
+    font-weight: var(--weight-semi-bold);
 
+}
 
 @media screen and (max-width:375px) {
     .overlay {

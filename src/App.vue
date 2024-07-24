@@ -7,6 +7,7 @@ import { ref } from 'vue';
 
 const cartData = ref([]);
 
+
 const addArticle = (product) => {
   cartData.value.push(product);
 
@@ -28,6 +29,11 @@ const updateQuantity = (product) => {
 const checkQuantity = (product) => {
   return cartData.value.filter(item => item.name === product.name).length;
 }
+
+const resetQuantity = () => {
+  cartData.value = []
+}
+
 const show = ref(false);
 
 const showModal = () => {
@@ -44,7 +50,7 @@ const closeModal = () => {
     :checkQuantity="checkQuantity" />
   <Cart :cartData='cartData' :removeArticle="removeArticle" :showModal="showModal" />
 
-  <Modal :cartData="cartData" :showModal="showModal" :closeModal="closeModal" :show="show" />
+  <Modal :cartData="cartData" :showModal="showModal" :closeModal="closeModal" :show="show" :resetQuantity="resetQuantity"/>
 </template>
 <style></style>
 
