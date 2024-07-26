@@ -43,7 +43,7 @@ import SuccessIcon from "@/assets/images/icon-order-confirmed.svg"
 import { computed } from "vue";
 
 const resolveUrl = (relativePath) => {
-  return new URL(relativePath, import.meta.url).href;
+    return new URL(`../assets/images/${relativePath}`, import.meta.url).href;
 };
 
 const { cartData, show, closeModal,resetQuantity } = defineProps({

@@ -37,7 +37,7 @@ import { ref } from "vue";
 
 
 const resolveUrl = (relativePath) => {
-  return new URL(relativePath, import.meta.url).href;
+  return new URL(`../assets/images/${relativePath}`, import.meta.url).href;
 };
 const isSelected = ref(false)
 const selectProduct = () => {
