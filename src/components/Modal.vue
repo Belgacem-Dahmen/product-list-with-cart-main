@@ -9,7 +9,7 @@
                 <div class="modal__item" v-for="article in articles" :key="article.id">
                     <div class="modal__item-infos">
                         <div class="modal__item-infos-left">
-                            <img class="modal__item-img" :src="getImageUrl(article.image.thumbnail)" alt="">
+                            <img class="modal__item-img" :src="resolveUrl(article.image.thumbnail)" alt="">
                             <div>
                                 <p class="modal__item-name">{{ article.name }}</p>
                                 <div class="modal__item--infos">
@@ -42,9 +42,9 @@
 import SuccessIcon from "@/assets/images/icon-order-confirmed.svg"
 import { computed } from "vue";
 
-function getImageUrl(url) {
-    return new URL(url, import.meta.url).href
-}
+const resolveUrl = (relativePath) => {
+  return new URL(relativePath, import.meta.url).href;
+};
 
 const { cartData, show, closeModal,resetQuantity } = defineProps({
     cartData: {
